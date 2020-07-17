@@ -1,0 +1,41 @@
+import re
+import pandas as pd
+import xlrd
+import xlwt
+import csv
+#from StyleFrame import StyleFrame, Styler
+
+
+ff=open(r"C:\excel\rave.txt",encoding="utf8")
+#print(ff)
+lines = ff.readlines()
+#print(lines)
+rows = len(lines)
+print(rows)
+
+
+
+
+
+
+table = pd.DataFrame(columns=["Number","Region","Sev.","Support Area","Description"])
+for count in range(0,rows,2):
+
+    if (count+1)%2 == 1:
+        res = re.split(r'[\t\n]s*',lines[count])
+        Number = res[0]
+        SA = res[1]
+        res1 = re.split(r'[\t\n]s*',lines[count+1])
+        D = res1[0].replace('Show less','')
+        Sev = res1[1]   
+        Region = ""
+        table=table.append(pd.DataFrame({'Number':[Number], "Region":[Region],"Sev.":[Sev],"Support Area":[SA],"Description":[D]}),ignore_index=True)        
+
+
+
+path = 'c:/excel/table0715.csv'
+table.to_csv(path,sep=',',index= False, header = True)
+
+tablet = open(path,"r")
+table2 = csv.reader(tablet)
+print(table2)
